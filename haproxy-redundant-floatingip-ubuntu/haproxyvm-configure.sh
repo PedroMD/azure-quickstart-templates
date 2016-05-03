@@ -80,11 +80,15 @@ defaults
     errorfile 504 /etc/haproxy/errors/504.http
 
 # Listen on all IP addresses. This is required for load balancer probe to work
-listen http 0.0.0.0:$LB_PORT
-    mode tcp
+frontend web_frontend
+    bind 0.0.0.0:$LB_PORT
+    default_backend web_backend
+
+backend web_backend
+    mode http 
     option tcplog
     balance roundrobin
-    maxconn 10000" > $HAPROXY_CFG
+    fullconn 10000" > $HAPROXY_CFG
 
     # Add application VMs to haproxy listener configuration 
     for APPVM in "${APPVMS[@]}"; do
@@ -111,13 +115,8 @@ setup_keepalived() {
 
     IS_MASTER=$( [[ `hostname -s` == $MASTERVM ]]; echo $? )
 
-    # keepalived uses VRRP over multicast by default, but Azure doesn't support multicast 
-    # (http://feedback.azure.com/forums/217313-azure-networking/suggestions/547215-multicast-support) 
-    # keepalived needs to be configured with unicast. Support for unicast was introduced only in version 1.2.8. 
-    # Default version available in Ubuntu 14.04 is 1.2.7-1ubuntu1. 
-
-    # Install a newer version of keepalived from a ppa.
-    add-apt-repository -y ppa:keepalived/stable && apt-get -y update && apt-get install -y keepalived
+    # Install keepalived > 1.2.8 on Ubuntu 16.04LTS (atm, 1.2.19 was the latest and working fine with unicast support)
+    apt-get install keepalived
 
     # Setup keepalived.conf
     KEEPALIVED_CFG=/etc/keepalived/keepalived.conf
