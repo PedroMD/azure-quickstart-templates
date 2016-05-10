@@ -74,12 +74,6 @@
   },
 
     "numberOfAppInstances": 2,
-    "appVMScripts": {
-      "fileUris": [
-        "[concat(variables('scriptsBaseUrl'), 'node-setup.sh')]"
-      ],
-      "commandToExecute": "sudo bash node-setup.sh"
-    },
     "appVMPort": 80,
 
     "imagePublisher": "Canonical",
