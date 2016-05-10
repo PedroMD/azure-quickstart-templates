@@ -57,7 +57,7 @@
     }
   },
   "variables": {
-    "scriptsBaseUrl": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/haproxy-redundant-floatingip-ubuntu/",
+    "scriptsBaseUrl": "https://github.com/PedroMD/azure-quickstart-templates/tree/master/haproxy-redundant-floatingip-ubuntu/",
 	"apiVersion": "2015-06-15",
 
     "location": "[resourceGroup().location]",
@@ -77,9 +77,9 @@
     "numberOfAppInstances": 2,
     "appVMScripts": {
       "fileUris": [
-        "[concat(variables('scriptsBaseUrl'), 'apache-setup.sh')]"
+        "[concat(variables('scriptsBaseUrl'), 'node-setup.sh')]"
       ],
-      "commandToExecute": "sudo bash apache-setup.sh"
+      "commandToExecute": "sudo bash node-setup.sh"
     },
     "appVMPort": 80,
 
